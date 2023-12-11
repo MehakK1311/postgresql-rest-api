@@ -1,5 +1,11 @@
+const pool = require('../../db.js')
+
 const getStudents = (req, res) => {
-    console.log('get students')
+    pool.query("SELECT * FROM students", (err, results) => {
+        if(err) throw err;
+
+        res.status(200).json(results.rows)
+    })
 }
 
 module.exports ={
