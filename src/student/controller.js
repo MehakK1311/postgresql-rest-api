@@ -35,6 +35,26 @@ const addStudent = (req, res) => {
     })
 }
 
+const updateStudent = (req, res) => {
+    const id = parseInt(req.params.id)
+    const {name} = req.body
+
+    pool.query(queries.getStudentById, [id], (err, results) => {
+
+        const noStudentFound = !results.rows.length;
+        if(noStudentFound){
+            res.send('student not found')
+        }
+
+       //update student
+       pool.query(queries.updateStudent, [name, id], (err, results) => {
+        if (err) throw err;
+        res.status(200).send('student updated')
+    })
+    })
+
+}
+
 const deleteStudent = (req, res) => {
     const id = parseInt(req.params.id)
     pool.query(queries.getStudentById, [id], (err, results) => {
@@ -56,5 +76,6 @@ module.exports = {
     getStudents,
     getStudentById,
     addStudent,
-    deleteStudent
+    deleteStudent,
+    updateStudent
 }
